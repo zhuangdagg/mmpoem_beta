@@ -1,28 +1,57 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container">
+    <header class='navbar'>
+      <span class="site-name">mmpoem.cn</span>
+      <router-link to="/">主页</router-link> |
+      <router-link to="/bxcp">白香词谱</router-link> |
+      <router-link to="/other">待完善</router-link> |
+    </header>
+    <router-view class='content'/>
   </div>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script type="text/javascript">
+  export default {
+  data() {
+    return {
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
+    }
+  },
+  methods: {
+
   }
-}
+  }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style >
+  .container {
+    width: 100%;
+    height: 100%;
+
+  }
+  header {
+    z-index:20;
+    margin:0;
+    padding: 0;
+    position:fixed;
+    width: 100%;
+    height: 45px;
+    border-bottom: 1px solid ;
+    font-size:200%;
+  }
+  .content {
+    position: relative;
+    left: 0;
+    top:45px;
+  }
+    a {
+    text-decoration: none;
+    color:inherit;
+  }
+  a:hover{
+    text-decoration: underline;
+    line-height:5.4px;
+
+  }
+
 </style>
