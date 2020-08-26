@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>白香词谱</title>
+	<meta charset="utf-8">
+	<link rel="icon" type="image/png" href="/img/logo.png">
+
+	<style type="text/css">
+		
+		body {
+			font-size: 12px;
+			background-image: url('/img/ink.jpg');
+			background-repeat:no-repeat;
+			background-size: 100%;
+			background-position: top 0px;
+			font-family:mikai;
+		}
+		nav {
+			/*border:1px solid black;*/
+			font-size: 15px;
+		}
+		div {
+			position: absolute;
+			top:50px;
+			width:95%;
+			height:80%;
+			/*border:1px solid black;*/
+			writing-mode:tb-rl;
+			
+		}
+		p {
+			position: relative;
+			margin: 1.5em 0.3em;
+			font-size: 3em;
+			animation:fade-out 5s 1;
+		}
+		@keyframes fade-out {
+			from {
+				opacity:0;
+			}
+			to {
+				opcity:1;
+			}
+		}
+		#ciming {
+			font-size: 3.2em;
+			margin:0em 0.3em 0em 1em;
+			padding-top: 0px;
+		}
+		#shiren {
+			font-size: 2.5em;
+			margin: 6em 0.8em 0em;
+		}
+		.pagePrevious {
+			position:fixed;
+			/*border: 1px solid black;*/
+			width: 120px;
+			height: 90%;
+			top:calc(50% - 45%);
+			left: 10px;
+		}
+		.pageNext {
+			position:fixed;
+			/*border: 1px solid black;*/
+			width: 120px;
+			height: 90%;
+			top:calc(50% - 45%);
+			right: 10px;
+		}
+		.pageNext:hover svg{
+			fill: rgba(125,125,125,0.9);
+			transform:scale(1.2);
+		}
+		svg {
+			position: relative;
+			/*border: 1px solid black;*/
+			top:calc(50% - 50px);
+			fill:rgba(0,0,0,0);
+			left: 0px;
+			transition-duration: 0.5s;        /*transition 写在元素上，而不是：hover上就有回程时间*/
+			transition-timing-function: ease-out;
+		}
+		.pagePrevious:hover svg{
+			fill: rgba(125,125,125,0.9);
+			transform: scale(1.2);
+			/*transition-duration: .8s;*/
+			/*transition-timing-function: ease-out;*/
+		}
+		a {
+			text-decoration: none;
+			color:black;
+		}
+
+
+/*		@media screen and (min-width: 1175px) {
+			
+		}*/
+	</style>
+</head>
+<body>
+	<style id="fonts" type="text/css">
+		@font-face {
+			font-family:mikai;
+			src:url('/font/mikai.woff');
+		}
+	</style>
+	<nav>
+		<a href="javascript:alert('主页尚未完成');">&lt木木诗词&gt</a><span id="No">白香词谱</span>
+	</nav>
+
+	<div class="content">
+		<p id="ciming">《斗百花·满搦宫腰纤细》</p>
+		<p>满搦宫腰纤细。</p>
+		<p>年纪方当笄岁。</p>
+		<p>刚被风流沾惹，</p>
+		<p>与合垂杨双髻。</p>
+		<p>初学严妆，</p>
+		<p>如描似削身材，</p>
+		<p>怯雨羞云情意。</p>
+		<p>举措多娇媚。</p>
+		<p>争奈心性，</p>
+		<p>未会先怜佳婿。</p>
+		<p>长是夜深，</p>
+		<p>不肯便入鸳被，</p>
+		<p>与解罗裳，</p>
+		<p>盈盈背立银扛，</p>
+		<p>却道你先睡。</p>
+		<p id="shiren">——刘永</p>
+	</div>
+	<div class="pagePrevious" >
+	<svg version="1.1"
+		xmls = 'http:www.w3.org/2000/svg'
+		width ='100' height = '200'>
+			<g class = "fanye" >
+			<path d="M 0 100 l 100 -100 v 50 l -50 50 l 50 50 v 50 z" stroke-width="1" />
+			</g>
+	</svg>
+	</div>
+	<div class="pageNext">
+		<svg version="1.1"
+			xmls = 'http:www.w3.org/2000/svg'
+			width ='100' height = '200'>
+			<path d="M 100 100 l -100 -100 v 50 l 50 50 l -50 50 v 50 z" stroke-width="1" />
+		</svg>
+	</div>
+
+	<script type="text/javascript">
+		let numDic = [['','壹','贰','叁','肆','伍','陆','柒','捌','玖'],['','拾','贰拾','叁拾','肆拾','伍拾','陆拾','柒拾','捌拾','玖拾','壹佰']]
+		var No = 1;
+		let previousPage = document.querySelector('.pagePrevious');
+		previousPage.addEventListener('click',prePoem);
+		let nextPage = document.querySelector('.pageNext');
+		nextPage.addEventListener('click',nextPoem);
+
+		function prePoem() {
+			if(No == 1) No = 100;
+			else No -= 1;
+			poemGet(No);
+		}
+
+		function nextPoem() {
+			if(No == 100) No = 1;
+			else No += 1;
+			poemGet(No);
+		}
+
+		function poemGet(No = 1) {
+			let url = 'http://localhost/search/' + No;
+			fetch(url).then((response) => {
+				if(response) return response.json();
+				else console.log('fail:' + response.status);})
+			.then((json) => {
+				poemDisplay(json);
+				No = json['No'];
+			})
+		}
+
+		function poemDisplay(json) {
+			console.log(json);
+			let pattern = /（.*）/g;   //正则表达式：用于过滤词句（）内容
+			let content = document.querySelector('.content');
+			let poemOrder = document.querySelector('#No');
+			let style = document.querySelector('#fonts');
+			style.textContent = "@font-face{font-family:mikai;src:url('/font/"+ No +".woff');}"
+			let title = document.createElement('p');
+
+			content.innerHTML = '';
+			title.setAttribute('id','ciming');
+			title.textContent = '《' +json['词牌名']+'·'+json['词名'] + '》';
+			content.appendChild(title);
+			if(json['词体'].length >= 28) content.setAttribute('style','font-size:0.8em;'+'margin-top:8em;');
+			else content.setAttribute('style','font-size:1.5em;'+'margin-top:2em;');
+			for(let i=0; i < json['词体'].length; i+=2){
+				let p = document.createElement('p');
+				let shici = json['词体'][i];
+				p.textContent = shici.replace(pattern,'');    //正则表达式过滤（）内容
+				content.appendChild(p);
+			}
+			let shiren = document.createElement('p');
+			shiren.setAttribute('id','shiren');
+			shiren.textContent ='—' + json['作者'].replace(pattern,'');
+			content.appendChild(shiren);
+			//转换No为中文数字
+			let decade = parseInt(json['No'] / 10);
+			let unit = json['No'] % 10;
+			poemOrder.textContent = '白香词谱 — 其 '+numDic[1][decade]+numDic[0][unit];
+
+		}
+
+		window.onload = function(event) {
+			// alert('successful load window!');
+			console.log(event);
+			poemGet(No);
+
+		}
+	</script>
+
+
+
+
+</body>
+</html>
