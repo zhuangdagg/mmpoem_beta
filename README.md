@@ -1,5 +1,6 @@
 # mmpoem_beta
 - [customize configuration](#customize)
+- [lints and fixes files](#Lints-and-fixes-files)
 
 ## Project setup
 ```
