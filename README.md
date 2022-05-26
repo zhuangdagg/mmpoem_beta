@@ -1,4 +1,5 @@
 # mmpoem_beta
+- [customize configuration](#customize)
 
 ## Project setup
 ```
@@ -20,5 +21,5 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
+### Customize configuration <a name="customize"></a>
 See [Configuration Reference](https://cli.vuejs.org/config/).
